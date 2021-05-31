@@ -1,6 +1,8 @@
 #include <iostream>
+#include <chrono>
 #include "Fibonacci.h"
 using namespace std;
+using namespace std::chrono;
 
 void FibonacciIeration(int max) {
 	int a = 0;
@@ -32,6 +34,17 @@ void FibonacciRecursion(int max, int arg1, int arg2) {
 
 
 int main() {
-	FibonacciIeration(300);	
+	auto start = high_resolution_clock::now();
+	FibonacciIeration(300);
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(stop - start);
+	cout << "Time taken by Iteration: "
+		<< duration.count() << " microseconds" << endl;
+	start = high_resolution_clock::now();
 	FibonacciRecursion(300);
+	cout << endl;
+	stop = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(stop - start);
+	cout << "Time taken by Recursion: "
+		<< duration.count() << " microseconds" << endl;
 }
