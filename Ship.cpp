@@ -1,17 +1,16 @@
-class Ship {
-private:
-	string name;
-	int size;
-public:
-	string GetName() {
-		return name;
-	}
-	int GetSize() {
-		return size;
-	}
-	Ship(string rname, int rsize) {
-		size = rsize;
-		name = rname;
-	}
-
+#include "Ship.h"
+#include <string>
+using namespace BattleShip;
+void Ship::GetMark() {
+	return mark;
+}
+void Ship::GetMark() {
+	return name;
+}
+void Ship::GetSize() {
+	return size;
+}
+Ship::Ship(int rsize, char rmark){
+	size = rsize;
+	mark = rmark;
 };
