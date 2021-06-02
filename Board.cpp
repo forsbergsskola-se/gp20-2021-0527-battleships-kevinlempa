@@ -38,13 +38,6 @@ public:
 				board[i][x] = 'B';
 			}
 		}
-		for (int i = 0; i < 10; i++) {
-			cout << endl;
-			for (int x = 0; x < 10; x++) {
-				cout << board[i][x] ;
-			}
-		}
-
 	}
 };
 int main() {
