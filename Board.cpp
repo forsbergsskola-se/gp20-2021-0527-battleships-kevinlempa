@@ -3,7 +3,70 @@
 using namespace std;
 using namespace BattleShip;
 
+bool Board::PlaceShip(int x, int y, Ship ship) {
+	bool downwards = true;
+	bool right = true;
 
+	if (playerArray[x][y] == ' ') {
+		for (int i = 0; i < ship.GetSize(); i++) {
+			if (playerArray[x + i][y] != ' ' || x + i > 9 || x + i < 0) {
+				downwards = false;
+			}
+			if (playerArray[x][y + 1] != ' ' || y + i > 9 || y + i < 0) {
+				right = false;
+			}
+		}
+		return PlaceMarker(downwards, right, ship, x, y);
+	}
+	else return false;
+}
+bool Board::PlaceMarker(bool downwards, bool right, Ship ship, int x, int y) {
+	if (downwards && right) {
+		cout << "Horizontal or Vertical enter : h/v" << endl;
+		char hz;
+		cin >> hz;
+		hz = tolower(hz);
+		if (hz == 'v') {
+			for (int i = 0; i < ship.GetSize(); i++) {
+				playerArray[x + i][y] = ship.GetMark();
+			}
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			return true;
+		}
+		else if (hz == 'h') {
+			for (int i = 0; i < ship.GetSize(); i++) {
+				playerArray[x][y + i] = ship.GetMark();
+			}
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			return true;
+		}
+	}
+	else if (downwards) {
+		for (int i = 0; i < ship.GetSize(); i++) {
+			playerArray[x + i][y] = ship.GetMark();
+		}
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		return true;
+	}
+	else if (right) {
+		for (int i = 0; i < ship.GetSize(); i++) {
+			playerArray[x][y + 1] = ship.GetMark();
+		}
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		return true;
+	}
+	else {
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "----Invalid Input try again----" << endl;
+		return PlaceMarker(downwards, right, ship, x, y);
+	}
+	return false;
+}
 void Board::DrawAttackBoard() {
 	cout << "\n\n\t\t\t\t  BattleShip\n\n";
 	cout << "	  |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |" << endl;
@@ -30,8 +93,9 @@ void Board::DrawAttackBoard() {
 	cout << "	  -------------------------------------------------------------" << endl;
 
 }
-void Board::DrawPlayerBoard() {
+void Board::DrawPlayerBoard(string str) {
 	cout << "\n\n\t\t\t\t  BattleShip\n\n";
+	cout << "\t\t\t\t   "<<str<<"\n\n";
 	cout << "	  |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |" << endl;
 	cout << "	  -------------------------------------------------------------" << endl;
 	cout << "	A |  " << playerArray[0][0] << "  |  " << playerArray[0][1] << "  |  " << playerArray[0][2] << "  |  " << playerArray[0][3] << "  |  " << playerArray[0][4] << "  |  " << playerArray[0][5] << "  |  " << playerArray[0][6] << "  |  " << playerArray[0][7] << "  |  " << playerArray[0][8] << "  |  " << playerArray[0][9] << "  |  " << endl;
@@ -54,6 +118,9 @@ void Board::DrawPlayerBoard() {
 	cout << "	  -------------------------------------------------------------" << endl;
 	cout << "	J |  " << playerArray[9][0] << "  |  " << playerArray[9][1] << "  |  " << playerArray[9][2] << "  |  " << playerArray[9][3] << "  |  " << playerArray[9][4] << "  |  " << playerArray[9][5] << "  |  " << playerArray[9][6] << "  |  " << playerArray[9][7] << "  |  " << playerArray[9][8] << "  |  " << playerArray[9][9] << "  |  " << endl;
 	cout << "	  -------------------------------------------------------------" << endl;
+}
+Board::Board() {
+	Init();
 }
 void Board::Init() {
 	for (int i = 0; i < 10; i++) {
