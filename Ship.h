@@ -3,12 +3,13 @@
 namespace BattleShip {
 	class Ship {
 	private:
-
+		std::string name;
 		int size;
 		char mark;
 	public:
+		std::string GetName();
 		int GetSize();
 		char GetMark();
-		Ship(int rsize, char rmark);
+		Ship(std::string rname,int rsize, char rmark);
 	};
 }

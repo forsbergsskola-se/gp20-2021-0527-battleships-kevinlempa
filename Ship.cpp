@@ -1,16 +1,19 @@
 #include "Ship.h"
 #include <string>
 using namespace BattleShip;
-void Ship::GetMark() {
+
+char Ship::GetMark() {
 	return mark;
 }
-void Ship::GetMark() {
-	return name;
-}
-void Ship::GetSize() {
+
+int Ship::GetSize() {
 	return size;
 }
-Ship::Ship(int rsize, char rmark){
+std::string Ship::GetName() {
+	return name;
+}
+Ship::Ship(std::string rname,int rsize, char rmark){
 	size = rsize;
 	mark = rmark;
+	name = rname;
 };
