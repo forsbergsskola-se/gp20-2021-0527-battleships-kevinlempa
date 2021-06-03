@@ -13,5 +13,6 @@ namespace BattleShip {
 		void PlaceShips();
 		std::tuple<int, int> Input();
 		Player(std::string initName);
+		Player();
 	};
 }

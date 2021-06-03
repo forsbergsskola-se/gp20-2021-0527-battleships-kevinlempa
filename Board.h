@@ -11,9 +11,6 @@ namespace BattleShip {
 		void DrawPlayerBoard(std::string str);
 		void DrawAttackBoard();
 		bool PlaceShip(int x,int y,Ship ship);
-
-
-
 		Board();
 	};
 }

@@ -8,6 +8,9 @@ using namespace BattleShip;
 Player::Player(string initName) {
 	name = initName;
 }
+Player::Player() {
+	name = "";
+}
 void Player::PlaceShip(Ship ship) {
 	playerBoard.DrawPlayerBoard(name);
 	cout << "Where would you like to Place your " << ship.GetName() << "?\nThe " << ship.GetName() << " takes up " << ship.GetSize() << " slots" << endl;
@@ -58,12 +61,4 @@ tuple<int, int> Player::Input() {
 		cout << "----Invalid Input try again----" << endl;
 		return Input();
 	}
-}
-
-
-
-int main() {
-	Player player("Player 1");
-	player.PlaceShips();
-
 }
