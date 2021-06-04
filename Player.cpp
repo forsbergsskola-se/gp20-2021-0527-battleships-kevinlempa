@@ -17,21 +17,31 @@ void Player::PlaceShip(Ship ship) {
 	auto xy = Input();
 	if (!playerBoard.PlaceShip(get<0>(xy), get<1>(xy), ship)) {
 		cout << "Cannot place " << ship.GetName() << " here.";
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin.get();
 		PlaceShip(ship);
 	}
 }
-void Player::PlaceShips() {
+void Player::Attack(Player& player) {
+	playerBoard.DrawAttackBoard(name);
+	cout << "Where would you like to attack?" << endl;
+	auto xy = Input();
+	playerBoard.SetAttackMarker(get<0>(xy), get<1>(xy), player.playerBoard.Attack(get<0>(xy), get<1>(xy)));
+
+}
+tuple<Ship,Ship,Ship,Ship,Ship > Player::PlaceShips() {
 	Ship carrier("Carrier", 5, 'C');
 	Ship battleShip("Battleship", 4, 'B');
 	Ship destroyer("Destroyer", 3, 'D');
-	Ship patrolBoatA("Patrol Boat", 2, 'P');
+	Ship subMarine("Submarine", 2, 'S');
 	Ship patrolBoatB("Patrol Boat", 2, 'P');
 	PlaceShip(carrier);
 	PlaceShip(battleShip);
 	PlaceShip(destroyer);
-	PlaceShip(patrolBoatA);
+	PlaceShip(subMarine);
 	PlaceShip(patrolBoatB);
 	playerBoard.DrawPlayerBoard(name);
+	return make_tuple(carrier, battleShip, destroyer, subMarine, patrolBoatB);
 }
 bool Player::ValidInput(char xInput, int yInput) {
 	if (yInput < 0 || yInput > 9)

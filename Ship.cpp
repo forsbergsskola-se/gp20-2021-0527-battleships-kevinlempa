@@ -1,5 +1,6 @@
 #include "Ship.h"
 #include <string>
+
 using namespace BattleShip;
 
 char Ship::GetMark() {

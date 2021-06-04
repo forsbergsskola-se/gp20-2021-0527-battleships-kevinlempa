@@ -5,6 +5,9 @@ using namespace std;
 namespace BattleShip {
 	class BattleShips {
 	private:
+		Player playerOne;
+		Player playerTwo;
+		bool CheckWin();
 		void Init();
 	public:
 		BattleShips();

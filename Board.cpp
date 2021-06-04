@@ -3,6 +3,39 @@
 using namespace std;
 using namespace BattleShip;
 
+bool Board::Win() {
+	for (int i = 0; i < 10; i++) {
+		for (int x = 0; x < 10; x++) {
+			if (!(playerArray[i][x] == 'M' || playerArray[i][x] == 'H' || playerArray[i][x] == ' '))
+				return false;
+		}
+	}
+	return true;
+}
+
+void Board::DestroyedShip(Ship& s1, Ship& s2, Ship& s3, Ship& s4, Ship& s5) {
+	CheckShip(s1);
+	CheckShip(s2);
+	CheckShip(s3);
+	CheckShip(s4);
+	CheckShip(s5);
+}
+void Board::CheckShip(Ship& ship) {
+	if (ship.isDestroyed)return;
+	int occurence = 0;
+	for (int i = 0; i < 10; i++) {
+		for (int x = 0; x < 10; x++) {
+			if (playerArray[i][x] == ship.GetMark()) {
+				occurence++;
+			}
+		}
+	}
+	if (occurence == 0) {
+		ship.isDestroyed = true;
+		cout << "You have destroyed a " << ship.GetName() << "!" << endl;
+		cin.get();
+	}
+}
 bool Board::PlaceShip(int x, int y, Ship ship) {
 	bool downwards = true;
 	bool right = true;
@@ -20,6 +53,41 @@ bool Board::PlaceShip(int x, int y, Ship ship) {
 	}
 	else return false;
 }
+bool Board::Attack(int x, int y) {
+	if (playerArray[x][y] == ' ') {
+		playerArray[x][y] = 'M';
+		cout << "-->You missed!" << endl;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin.get();
+		return false;
+	}
+	else if (playerArray[x][y] == 'H') {
+		cout << "-->You already hit that spot!" << endl;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin.get();
+		return true;
+	}
+	else if (playerArray[x][y] == 'M') {
+		cout << "-->You missed!" << endl;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin.get();
+		return false;
+	}
+	playerArray[x][y] = 'H';
+	cout << "-->You Hit!" << endl;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	cin.get();
+	
+	return true;
+}
+void Board::SetAttackMarker(int x, int y, bool b) {
+	if (b)
+		attackArray[x][y] = 'H';
+	else
+		attackArray[x][y] = 'M';
+}
+
+
 bool Board::PlaceMarker(bool downwards, bool right, Ship ship, int x, int y) {
 	if (downwards && right) {
 		cout << "Horizontal or Vertical enter : h/v" << endl;
@@ -41,6 +109,11 @@ bool Board::PlaceMarker(bool downwards, bool right, Ship ship, int x, int y) {
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			return true;
+		}else {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "----Invalid Input try again----" << endl;
+			return PlaceMarker(downwards, right, ship, x, y);
 		}
 	}
 	else if (downwards) {
@@ -53,7 +126,7 @@ bool Board::PlaceMarker(bool downwards, bool right, Ship ship, int x, int y) {
 	}
 	else if (right) {
 		for (int i = 0; i < ship.GetSize(); i++) {
-			playerArray[x][y + 1] = ship.GetMark();
+			playerArray[x][y + i] = ship.GetMark();
 		}
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -67,8 +140,10 @@ bool Board::PlaceMarker(bool downwards, bool right, Ship ship, int x, int y) {
 	}
 	return false;
 }
-void Board::DrawAttackBoard() {
+void Board::DrawAttackBoard(string str) {
 	cout << "\n\n\t\t\t\t  BattleShip\n\n";
+	cout << "\t\t\t\t   " << str << "\n";
+	cout << "\t\t\t\t    Attack \n\n";
 	cout << "	  |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |" << endl;
 	cout << "	  -------------------------------------------------------------" << endl;
 	cout << "	A |  " << attackArray[0][0] << "  |  " << attackArray[0][1] << "  |  " << attackArray[0][2] << "  |  " << attackArray[0][3] << "  |  " << attackArray[0][4] << "  |  " << attackArray[0][5] << "  |  " << attackArray[0][6] << "  |  " << attackArray[0][7] << "  |  " << attackArray[0][8] << "  |  " << attackArray[0][9] << "  |  " << endl;
@@ -95,7 +170,7 @@ void Board::DrawAttackBoard() {
 }
 void Board::DrawPlayerBoard(string str) {
 	cout << "\n\n\t\t\t\t  BattleShip\n\n";
-	cout << "\t\t\t\t   "<<str<<"\n\n";
+	cout << "\t\t\t\t   " << str << "\n\n";
 	cout << "	  |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |" << endl;
 	cout << "	  -------------------------------------------------------------" << endl;
 	cout << "	A |  " << playerArray[0][0] << "  |  " << playerArray[0][1] << "  |  " << playerArray[0][2] << "  |  " << playerArray[0][3] << "  |  " << playerArray[0][4] << "  |  " << playerArray[0][5] << "  |  " << playerArray[0][6] << "  |  " << playerArray[0][7] << "  |  " << playerArray[0][8] << "  |  " << playerArray[0][9] << "  |  " << endl;

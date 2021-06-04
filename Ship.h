@@ -7,6 +7,7 @@ namespace BattleShip {
 		int size;
 		char mark;
 	public:
+		bool isDestroyed = false;
 		std::string GetName();
 		int GetSize();
 		char GetMark();
